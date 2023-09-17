@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="a.b.c.com.kos.board.dao.KosBoardDAO">
+	<insert id="kosBoardInsert" parameterType = "kosboardVO">
+	INSERT INTO SPRING_BOARD (
+		 BNUM
+		,BSUBJECT 
+		,BNAME 
+		,BCONTENT 
+		,BFILE
+		,BPW 
+		,DELETEYN 
+		,INSERTDATE 
+		,UPDATEDATE 
+		) VALUES (
+		  #{bnum, jdbcType=VARCHAR}
+		, #{bsubject, jdbcType=VARCHAR}
+		, #{bname, jdbcType=VARCHAR}
+		, #{bcontent, jdbcType=VARCHAR}
+		, #{bfile, jdbcType=VARCHAR}
+		, #{bpw, jdbcType=VARCHAR}
+		,'Y'
+		,TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+		,TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+		)
+	
+	</insert>
+	
+	<select id="kosBoardSelectAll" resultType="kosboardVO">
+		SELECT * FROM (SELECT 
+		 A.BNUM   			BNUM
+		,A.BSUBJECT 		BSUBJECT
+		,A.BNAME 			BNAME
+		,A.BCONTENT			BCONTENT
+		,A.BFILE			BFILE
+		,A.BPW				BPW
+		,A.BHIT				BHIT
+		,A.UPDATEDATE		UPDATEDATE
+		,CEIL(ROW_NUMBER() OVER(ORDER BY A.BNUM)/ #{pageSize, jdbcType=VARCHAR}) pagesize
+ 		,COUNT(A.BNUM) OVER() AS totalCount
+		 FROM SPRING_BOARD A
+		 WHERE DELETEYN = 'Y'
+		)
+		WHERE pagesize = #{curPage, jdbcType=VARCHAR}
+		ORDER BY 1
+		
+	</select>
+	
+	<update id="kosBoardBhit" parameterType="kosboardVO">
+	
+		UPDATE SPRING_BOARD 
+		SET BHIT = (SELECT NVL(MAX(BHIT), 0) + 1 
+		FROM SPRING_BOARD 
+		WHERE DELETEYN = 'Y' AND BNUM = #{bnum, jdbcType=VARCHAR})
+		WHERE DELETEYN = 'Y' AND BNUM = #{bnum, jdbcType=VARCHAR}
+
+	</update>
+	
+	<select id="kosBoardSelectContents" parameterType="kosboardVO" resultType="kosboardVO">
+		SELECT   A.BNUM BNUM 
+				,A.BSUBJECT BSUBJECT 
+				,A.BNAME BNAME 
+				,A.BCONTENT BCONTENT 
+				,A.BFILE BFILE 
+				,A.BPW BPW 
+				,A.BHIT BHIT 
+ 				,A.UPDATEDATE UPDATEDATE
+ 				,A.INSERTDATE INSERTDATE
+ 		FROM SPRING_BOARD A
+ 		WHERE DELETEYN = 'Y'
+		AND BNUM = #{bnum, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="kosBoardPwCheck" parameterType="kosboardVO" resultType="kosboardVO">
+		SELECT A.BPW BPW
+		FROM SPRING_BOARD A
+		WHERE DELETEYN = 'Y'
+		AND BNUM = #{bnum, jdbcType=VARCHAR}
+		AND BPW = #{bpw, jdbcType=VARCHAR}
+	
+	</select>
+	
+	<update id="kosBoardUpdate" parameterType="kosboardVO">
+	
+		UPDATE SPRING_BOARD 
+		SET  BCONTENT = #{bcontent, jdbcType=VARCHAR},
+			 UPDATEDATE = TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+		WHERE DELETEYN = 'Y'
+		AND BNUM = #{bnum, jdbcType=VARCHAR}
+	
+	</update>
+
+	</mapper>

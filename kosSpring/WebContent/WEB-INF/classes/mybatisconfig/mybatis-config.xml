@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+		  
+<configuration>
+	<typeAliases>
+		<typeAlias type="a.b.c.com.kos.mem.vo.KosMemberVO" alias="kosmembervO"/>
+		<typeAlias type="a.b.c.com.kos.login.vo.TempAuthVO" alias="tempAuthVO"/>
+		<typeAlias type="a.b.c.com.kos.login.vo.TempPwVO" alias="tempPwVO"/>
+		<typeAlias type="a.b.c.com.kos.board.vo.KosBoardVO" alias="kosboardVO"/>
+		<typeAlias type="a.b.c.com.kos.rboard.vo.KosRboardVO" alias="kosrboardVO"/>
+		<typeAlias type="a.b.c.com.kos.like.vo.KosBoardlikeVO" alias="kosboardlikeVO"/>
+		<typeAlias type="a.b.c.com.kos.product.vo.KosProductVO" alias="kosproductVO"/>
+		<typeAlias type="a.b.c.com.kos.cart.vo.KoscartVO" alias="koscartVO"/>
+		<typeAlias type="a.b.c.com.kos.calender.vo.CalendarVO" alias="calendarVO"/>
+		<typeAlias type="a.b.c.com.kos.order.vo.KosOrderVO" alias="kosorderVO"/>
+	</typeAliases> 
+</configuration>

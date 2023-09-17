@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="a.b.c.com.kos.mem.dao.KosMemberDAO">
+	
+		<insert id="kosMemberInsert" parameterType="kosmembervO" >
+		
+			INSERT INTO SPRING_MEMBER (
+									 MNUM ,MNAME ,MID 
+									,MPW ,MGENDER ,MBIRTH 
+									,MHP ,MTEL ,MEMAIL 
+									,MZONECODE ,MROADADDR ,MROADDETAIL 
+									,MJIBUNADDR ,MHOBBY ,MINFO 
+									,MPHOTO ,DELETEYN ,INSERTDATE 
+									,UPDATEDATE 
+									) VALUES (
+									 #{mnum, jdbcType=VARCHAR} ,#{mname, jdbcType=VARCHAR} ,#{mid, jdbcType=VARCHAR}
+									,#{mpw, jdbcType=VARCHAR} ,#{mgender, jdbcType=VARCHAR} ,#{mbirth, jdbcType=VARCHAR}
+									,#{mhp, jdbcType=VARCHAR} ,#{mtel, jdbcType=VARCHAR} ,#{memail, jdbcType=VARCHAR}
+									,#{mzonecode, jdbcType=VARCHAR} ,#{mroadaddr, jdbcType=VARCHAR} ,#{mroaddetail, jdbcType=VARCHAR}
+									,#{mjibunaddr, jdbcType=VARCHAR} ,#{mhobby, jdbcType=VARCHAR} ,#{minfo, jdbcType=VARCHAR}
+									,#{mphoto, jdbcType=VARCHAR} ,'Y' ,SYSDATE
+									,SYSDATE
+									)
+									
+		</insert>
+		
+		
+	<select id="Idcheck" parameterType="kosmembervO" resultType="kosmembervO">
+		SELECT A.MID 
+		FROM SPRING_MEMBER A
+		WHERE MID = #{mid, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="kosMemberSelectAll" parameterType="kosmembervO" resultType="kosmembervO">
+	
+	SELECT * FROM
+					( SELECT  A.MNUM 			AS	 MNUM
+			   	   			 ,A.MNAME			AS	 MNAME 
+			       			 ,A.MID 			AS	 MID 
+			       			 ,A.MPW   			AS	 MPW 
+			       			 ,A.MGENDER 		AS	 MGENDER
+			       			 ,A.MBIRTH 			AS	 MBIRTH 
+			       			 ,A.MHP				AS	 MHP 
+			       			 ,A.MTEL			AS	 MTEL 
+			       			 ,A.MEMAIL 			AS	 MEMAIL 
+			       			 ,A.MZONECODE 		AS	 MZONECODE 
+			       			 ,A.MROADADDR		AS	 MROADADDR 
+			       			 ,A.MROADDETAIL		AS	 MROADDETAIL 
+			       			 ,A.MJIBUNADDR 		AS	 MJIBUNADDR
+			       			 ,A.MHOBBY			AS	 MHOBBY 
+			       			 ,A.MINFO			AS	 MINFO 
+			       			 ,A.MPHOTO			AS	 MPHOTO 
+			       			 ,A.DELETEYN 		AS	 DELETEYN
+			       			 ,A.INSERTDATE		AS	 INSERTDATE 
+			       			 ,A.UPDATEDATE 		AS	 UPDATEDATE
+			       			 ,CEIL(ROW_NUMBER() OVER(ORDER BY A.MNUM)/#{pageSize, jdbcType=VARCHAR}) AS PAGESIZE
+			       			 ,COUNT(A.MNUM) OVER() AS totalCount
+		 			 FROM SPRING_MEMBER A
+					 WHERE DELETEYN = 'Y'
+					<if test="searchFilter =='key2'">
+				    	<![CDATA[AND MNUM LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%']]>
+				    </if>
+				    <if test="searchFilter =='key3'">
+				    	<![CDATA[AND MNAME LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%']]>
+				    </if>
+				    <if test="searchFilter =='key4'">
+				    	<![CDATA[AND MID LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%']]>
+				    </if>
+				    <if test="startDate!=null and startDate!='' and endDate!=null and endDate !=''">
+				    	<![CDATA[AND TO_CHAR(UPDATEDATE, 'YYYY-MM-DD') >= TO_CHAR(TO_DATE(#{startDate, jdbcType=VARCHAR}), 'YYYY-MM-DD')]]>
+				    	<![CDATA[AND TO_CHAR(UPDATEDATE, 'YYYY-MM-DD') <= TO_CHAR(TO_DATE(#{endDate}),'YYYY-MM-DD')]]>
+				    </if>
+		    		) 
+		    WHERE pageSize = #{curPage, jdbcType=VARCHAR}
+		    ORDER BY 1
+		    
+	</select>
+	
+	<select id="kosMemberSelect" parameterType="kosmembervO" resultType="kosmembervO">
+	SELECT A.MNUM 				 MNUM
+	  ,A.MNAME				 MNAME 
+	  ,A.MID 				 MID 
+	  ,A.MPW   			 	 MPW 
+	  ,A.MGENDER 			 MGENDER
+	  ,A.MBIRTH 			 MBIRTH 
+	  ,A.MHP				 MHP 
+	  ,A.MTEL				 MTEL 
+	  ,A.MEMAIL 			 MEMAIL 
+	  ,A.MZONECODE 			 MZONECODE 
+	  ,A.MROADADDR			 MROADADDR 
+	  ,A.MROADDETAIL		 MROADDETAIL 
+	  ,A.MJIBUNADDR 		 MJIBUNADDR
+	  ,A.MHOBBY				 MHOBBY 
+	  ,A.MINFO				 MINFO 
+	  ,A.MPHOTO				 MPHOTO 
+	  FROM SPRING_MEMBER A
+	  WHERE DELETEYN = 'Y'
+	  AND   MNUM = #{mnum, jdbcType=VARCHAR}
+	</select>
+	
+		<update id="kosMemberUpdate" parameterType="kosmembervO">
+				UPDATE SPRING_MEMBER 
+				SET 			 MNAME = #{mname, jdbcType=VARCHAR}
+								,MGENDER = #{mgender, jdbcType=VARCHAR} 
+								,MBIRTH = #{mbirth, jdbcType=VARCHAR}
+								,MHP = #{mhp, jdbcType=VARCHAR} 
+								,MTEL = #{mtel, jdbcType=VARCHAR}
+								,MEMAIL = #{memail, jdbcType=VARCHAR}
+								,MZONECODE = #{mzonecode, jdbcType=VARCHAR}
+								,MROADADDR = #{mroadaddr, jdbcType=VARCHAR}
+								,MROADDETAIL = #{mroaddetail, jdbcType=VARCHAR}
+								,MJIBUNADDR = #{mjibunaddr, jdbcType=VARCHAR}
+								,MHOBBY = #{mhobby, jdbcType=VARCHAR}
+								,MINFO = #{minfo, jdbcType=VARCHAR}
+								,MPHOTO = #{mphoto, jdbcType=VARCHAR}
+								,UPDATEDATE = SYSDATE
+				WHERE MNUM = #{mnum, jdbcType=VARCHAR} 
+				AND DELETEYN = 'Y'
+		</update>
+	
+
+	
+	</mapper>

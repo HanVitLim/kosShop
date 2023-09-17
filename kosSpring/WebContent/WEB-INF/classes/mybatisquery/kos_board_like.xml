@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="a.b.c.com.kos.like.dao.KosBoardlikeDAO">
+	
+	
+	<select id="kosBoardLikeSelect" parameterType="kosboardlikeVO" resultType="kosboardlikeVO">
+		
+		SELECT A.BLNUM FROM SPRING_BOARD_LIKE A
+		WHERE BNUM = #{bnum, jdbcType=VARCHAR}
+		AND MID = #{mid, jdbcType=VARCHAR}
+		AND DELETEYN = 'Y'
+		
+	</select>
+	
+	<insert id="kosBoardLikeInsert" parameterType="kosboardlikeVO">
+	INSERT INTO SPRING_BOARD_LIKE (
+									BLNUM,
+									MID,
+									BNUM,
+									LIKE_CNT_1,
+									LIKE_CNT_2,
+									DELETEYN,
+									INSERTDATE,
+									UPDATEDATE
+								) VALUES (
+									#{blnum, jdbcType=VARCHAR},
+									#{mid, jdbcType=VARCHAR},
+									#{bnum, jdbcType=VARCHAR},
+									'0',
+									'0',
+									'Y',
+									TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD'),
+									TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+								)
+	
+	</insert>
+	
+	<update id="kosBoardLikeUpdate" parameterType="kosboardlikeVO">
+	
+			UPDATE SPRING_BOARD_LIKE 
+			SET LIKE_CNT_1 = LIKE_CNT_1 + 1,
+				UPDATEDATE = TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+			WHERE MID =	#{mid, jdbcType=VARCHAR}
+			AND BNUM = #{bnum, jdbcType=VARCHAR}
+			AND DELETEYN = 'Y'
+	
+	</update>
+	
+	<select id="kosBoardLikeSelectAll" parameterType="kosboardlikeVO" resultType="kosboardlikeVO">
+				SELECT BNUM AS BNUM, SUM(LIKE_CNT_1) AS LIKE_CNT_1, SUM(LIKE_CNT_2) AS LIKE_CNT_2
+				FROM SPRING_BOARD_LIKE 
+				WHERE BNUM = #{bnum, jdbcType=VARCHAR}
+				AND DELETEYN = 'Y'
+				GROUP BY BNUM
+	</select>
+	
+	<update id="kosBoardLikeUpdate2" parameterType="kosboardlikeVO">
+	
+			UPDATE SPRING_BOARD_LIKE 
+			SET LIKE_CNT_2 = LIKE_CNT_2 + 1,
+				UPDATEDATE = TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+			WHERE MID =	#{mid, jdbcType=VARCHAR}
+			AND BNUM = #{bnum, jdbcType=VARCHAR}
+			AND DELETEYN = 'Y'
+	
+	</update>
+	
+	</mapper>

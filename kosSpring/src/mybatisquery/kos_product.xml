@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="a.b.c.com.kos.product.dao.KosProductDAO">
+
+	<insert id="kosProductInsert" parameterType="kosproductVO">
+	
+				INSERT INTO SPRING_PRODUCT(
+					 KPNUM
+					,KPID
+					,KPNAME
+					,KPCOMPANY
+				    ,KPFILE 
+				    ,KPCNT 
+				    ,KPPRICE 
+				    ,KPDESC 
+				    ,DELETEYN 
+				    ,INSERTDATE 
+				    ,UPDATEDATE
+				) VALUES (
+					#{kpnum, jdbcType=VARCHAR}
+					,#{kpid, jdbcType=VARCHAR}
+					,#{kpname, jdbcType=VARCHAR}
+					,#{kpcompany, jdbcType=VARCHAR}
+					,#{kpfile, jdbcType=VARCHAR}
+					,#{kpcnt}
+					,#{kpprice}
+					,#{kpdesc, jdbcType=VARCHAR}
+					,'Y'
+					,TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+					,TO_CHAR(TO_DATE(SYSDATE), 'YYYY-MM-DD')
+				)
+	</insert>
+	<select id="kosProductSelectAll" resultType="kosproductVO" parameterType="kosproductVO">
+		SELECT * FROM(
+		SELECT 
+					 KPNUM
+					,KPID
+					,KPNAME
+					,KPCOMPANY
+				    ,KPFILE 
+				    ,KPCNT 
+				    ,KPPRICE 
+				    ,KPDESC 
+				    ,DELETEYN 
+				    ,INSERTDATE 
+				    ,UPDATEDATE
+	       			,CEIL(ROW_NUMBER() OVER(ORDER BY KPNUM)/#{pageSize, jdbcType=VARCHAR}) pageSize
+	       			,COUNT(KPNUM) OVER() AS totalCount
+	    FROM SPRING_PRODUCT
+	    WHERE DELETEYN = 'Y')
+	    WHERE pageSize = #{curPage, jdbcType=VARCHAR}
+	
+	</select>
+
+	<select id="kosProductSelect" parameterType="kosproductVO" resultType="kosproductVO">
+	
+	SELECT 
+			 KPNUM  	KPNUM
+			,KPID		KPID
+			,KPNAME		KPNAME
+			,KPCOMPANY	KPCOMPANY
+		    ,KPFILE 	KPFILE
+		    ,KPCNT 		KPCNT
+		    ,KPPRICE 	KPPRICE
+		    ,KPDESC 	KPDESC
+		    ,DELETEYN 	DELETEYN
+		    ,INSERTDATE INSERTDATE
+		    ,UPDATEDATE	UPDATEDATE
+	FROM SPRING_PRODUCT 
+	WHERE DELETEYN = 'Y'
+	AND	  KPNUM = #{kpnum, jdbcType=VARCHAR}
+
+	</select>
+</mapper>

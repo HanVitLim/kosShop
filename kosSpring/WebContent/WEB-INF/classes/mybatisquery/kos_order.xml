@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="a.b.c.com.kos.order.dao.KosOrderDAO">
+	
+		<insert id="kosOrderInsert" parameterType="kosorderVO" >
+
+			INSERT INTO SPRING_ORDER (	
+										KONUM, 
+										KPNUM, KPID, KPNAME, 
+										KPCNT, KPPRICE, KPPRICESUM,
+										KMNUM, KMID, KMNAME,
+										KMHP, KMEMAIL, 
+										KODELIVERY,
+										KOZONE, KOROAD, KOROAD2, KOJIBUN,
+										DELETEYN, INSERTDATE, UPDATEDATE
+									)
+		            			VALUES
+		            				(   #{konum, jdbcType=VARCHAR}, 
+		            					#{kpnum, jdbcType=VARCHAR}, #{kpid, jdbcType=VARCHAR}, #{kpname, jdbcType=VARCHAR},
+		            					#{kpcnt, jdbcType=VARCHAR}, #{kpprice, jdbcType=VARCHAR}, #{kppricesum, jdbcType=VARCHAR},
+		            					#{kmnum, jdbcType=VARCHAR}, #{kmid, jdbcType=VARCHAR}, #{kmname, jdbcType=VARCHAR, jdbcType=VARCHAR},
+		            					#{kmhp, jdbcType=VARCHAR}, #{kmemail, jdbcType=VARCHAR},
+		            					#{kodelivery, jdbcType=VARCHAR},
+		            					#{kozone, jdbcType=VARCHAR}, #{koroad, jdbcType=VARCHAR}, #{koroad2, jdbcType=VARCHAR}, #{kojibun, jdbcType=VARCHAR},
+		            					'Y', SYSDATE, SYSDATE
+		            				 )
+		</insert>
+	
+	
+	</mapper>

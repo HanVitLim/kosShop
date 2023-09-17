@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="a.b.c.com.common.chabun.dao.KosChabunDAO">
+
+<select id="getKosMemberChabun" resultType="kosmembervO">
+	SELECT  /*+ INDEX_DESC(A SYS_C0011237) */
+        NVL(MAX(SUBSTR(A.MNUM, -4)), 0) + 1  MNUM 
+	FROM    SPRING_MEMBER A
+
+</select>
+
+<select id="getKosBoardChabun" resultType="kosboardVO">
+		SELECT  /*+ INDEX_DESC(A SYS_C0011306) */
+		        NVL(MAX(SUBSTR(A.BNUM, -4)), 0) + 1  BNUM 
+		FROM    SPRING_BOARD A
+
+</select>
+
+<select id="getKosRboardChabun" resultType="kosrboardVO">
+		SELECT  /*+ INDEX_DESC(A SYS_C0011307) */
+		        NVL(MAX(SUBSTR(A.RBNUM, -4)), 0) + 1  RBNUM 
+		FROM    SPRING_RBOARD A
+</select>
+
+<select id="getKosBoardlikeChabun" resultType="kosboardlikeVO">
+			SELECT  /*+ INDEX_DESC(A SYS_C0011350) */
+			        NVL(MAX(A.BLNUM), 0) + 1  BLNUM 
+			FROM    SPRING_BOARD_LIKE A
+</select>
+
+<select id="getKosProductChabun" resultType="kosproductVO">
+
+		SELECT  /*+ INDEX_DESC(A SYS_C0011351) */
+        NVL(MAX(SUBSTR(A.KPNUM, -4)), 0) + 1  KPNUM 
+		FROM    SPRING_PRODUCT A
+
+</select>
+
+<select id="getKosCartChabun" resultType="koscartVO">
+
+		SELECT  /*+ INDEX_DESC(A SYS_C0011450) */
+		        NVL(MAX(SUBSTR(A.KCNUM, -4)), 0) + 1  KCNUM 
+		FROM    SPRING_CART A
+
+</select>
+
+<select id="getKosOrderChabun" resultType="kosorderVO">
+
+		SELECT  /*+ INDEX_DESC(A SYS_C0011588) */
+		        NVL(MAX(SUBSTR(A.KONUM, -4)), 0) + 1  KONUM 
+		FROM    SPRING_ORDER A
+</select>
+
+</mapper>
